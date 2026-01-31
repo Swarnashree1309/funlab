@@ -1,30 +1,32 @@
+          
 pipeline {
     agent any
 
     stages {
 
-        stage('Checkout') {
+        stage('Clone Repo') {
             steps {
-                git 'https://github.com/Swarnashree1309/funlab.git'
+                git branch: 'main',
+                    url: 'https://github.com/Swarnashree1309/funlab.git'
             }
         }
 
-    
-    stages {
-
         stage('Build Docker Image') {
             steps {
-                echo "Building Docker image..."
+                echo 'Building Docker image...'
                 sh 'docker build -t funlab-image .'
             }
         }
 
         stage('Run Container') {
             steps {
-                echo "Running Docker container..."
-                sh 'docker run -d -p 8080:80 funlab-image'
+                echo 'Running container...'
+                sh '''
+                docker stop funlab || true
+                docker rm funlab || true
+                docker run -d --name funlab -p 8080:80 funlab-image
+                '''
             }
         }
-    }
     }
 }
