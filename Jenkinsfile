@@ -8,7 +8,7 @@ pipeline {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/Swarnashree1309/funlab.git'
-            }
+            } 
         }
 
         stage('Build Docker Image') {
